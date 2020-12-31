@@ -1,5 +1,6 @@
 require "option_parser"
 
+require "logger"
 require "../../sidekiq"
 require "../server"
 
@@ -13,7 +14,7 @@ module Sidekiq
       @timeout = 8
       @environment = "development"
       @tag = ""
-      @logger = Sidekiq::Logger.build
+      @logger = Logger.new(STDOUT)
 
       OptionParser.parse(args) do |parser|
         parser.banner = "Sidekiq v#{Sidekiq::VERSION} in Crystal #{Crystal::VERSION}\n#{Sidekiq::LICENSE}\n\

@@ -22,7 +22,7 @@ module Sidekiq
     getter hostname : String
 
     def initialize(@environment = "development", @queues = ["default"],
-                   @concurrency = 25, @logger = Sidekiq::Logger.build)
+                   @concurrency = 25, @logger = Logger.new(STDOUT))
       @hostname = ENV["DYNO"]? || System.hostname
       nonce = Random::Secure.hex(6)
       @identity = "#{@hostname}:#{::Process.pid}:#{nonce}"
@@ -30,7 +30,7 @@ module Sidekiq
       @labels = ["crystal"]
       @alive = true
       @server_middleware = Sidekiq::Middleware::Chain(Sidekiq::Middleware::ServerEntry).new.tap do |c|
-        c.add Sidekiq::Middleware::Logger.new
+        # c.add Sidekiq::Middleware::Logger.new
         c.add Sidekiq::Middleware::RetryJobs.new
       end
 
