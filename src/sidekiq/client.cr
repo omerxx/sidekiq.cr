@@ -13,17 +13,17 @@ module Sidekiq
 
       def initialize
         @pool = RedisConfig.new.new_pool
-        @logger = Sidekiq::Logger.build
+        @logger = Logger.new(STDOUT)
       end
 
       def initialize(redis_cfg : Sidekiq::RedisConfig, logger : ::Logger? = nil)
         @pool = redis_cfg.new_pool
-        @logger = logger || Sidekiq::Logger.build
+        @logger = logger || Logger.new(STDOUT)
       end
 
       def initialize(pool : Sidekiq::Pool, logger : ::Logger? = nil)
         @pool = pool
-        @logger = logger || Sidekiq::Logger.build
+        @logger = logger || Logger.new(STDOUT)
       end
     end
 
